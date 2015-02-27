@@ -1,9 +1,13 @@
 # dpd-openshift-start-script
 My own, universal start script for developing on my computer and no changes needs to be done to make it work on openshift.
 
+# credits
+Based on code: schettino72
+http://blog.schettino72.net/posts/mongodb-setup-deployd-heroku.html
+
 # code
 ```javascript
-//Author: Patryk "ipepe" Ptasiński npm@ipepe.pl
+//Author: Patryk "ipepe" Ptasiński npm@ipepe.pl, credit to: schettino72
 // ==================== Load dependencies
 var deployd = require('deployd');
 var url = require('url');
