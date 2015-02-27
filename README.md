@@ -2,7 +2,7 @@
 My own, universal start script for developing on my computer and no changes needs to be done to make it work on openshift.
 
 # code
-```
+```javascript
 //Author: Patryk "ipepe" Ptasiński npm@ipepe.pl
 // ==================== Load dependencies
 var deployd = require('deployd');
