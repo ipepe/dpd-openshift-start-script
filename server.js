@@ -1,4 +1,4 @@
-//Author: Patryk "ipepe" Ptasiński npm@ipepe.pl
+//Author: Patryk "ipepe" Ptasiński npm@ipepe.pl, credit to: schettino72
 // ==================== Load dependencies
 var deployd = require('deployd');
 var url = require('url');
