@@ -8,7 +8,10 @@ var server_port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
 var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
 // ==================== Database Envs
 var db_ip_address = process.env.OPENSHIFT_MONGODB_DB_HOST || server_ip_address;
+// OPENSHIFT DB ADDRESS
 var db_url_address = process.env.OPENSHIFT_MONGODB_DB_URL || 'mongodb://deployd:deployd@'+db_ip_address+':27017/';
+// HEROKU DB ADDRESS
+//var db_url_address = process.env.MONGOHQ_URL || "mongodb://:@localhost:27017/my_db_name";
 var db_parsed_url = url.parse(db_url_address);
 // ==================== Output current app config
 console.log(server_env);
