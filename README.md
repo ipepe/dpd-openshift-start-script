@@ -38,7 +38,6 @@ cd testproject
 npm init
 npm i deployd --save
 npm i dpd-openshift-start-script --save
-sudo mongod&
 node dpd-openshift-start-script\server.js
 ```
 

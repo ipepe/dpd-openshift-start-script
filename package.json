@@ -1,6 +1,6 @@
 {
   "name": "dpd-openshift-start-script",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "description": "My own, universal start script for developing on my computer and no changes needs to be done to make it work on openshift.",
   "main": "server.js",
   "scripts": {
