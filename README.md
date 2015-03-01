@@ -6,6 +6,42 @@ Based on code: schettino72
 
 http://blog.schettino72.net/posts/mongodb-setup-deployd-heroku.html
 
+#pre-usage
+Install mongodb:
+
+http://docs.mongodb.org/manual/installation/
+
+You should have configured database with login/pass/database name: deployd/deployd/deployd. To configure run in bash:
+```bash
+mongo shell
+```
+
+create user deployd with password deployd in database name: deployd
+```javascript
+use admin
+db.addUser( { user: "deployd", pwd: "deployd", roles: [ "userAdminAnyDatabase" ] } )
+use deployd
+db.addUser( { user: "deployd", pwd: "deployd", roles: [ "readWrite", "dbAdmin" ] } )
+```
+
+#usage
+
+You should have mongoDB running in background as a service or in separate terminal window with 
+```bash
+sudo mongod
+```
+
+Example code in unix terminal:
+```bash
+mkdir testproject
+cd testproject
+npm init
+npm i deployd --save
+npm i dpd-openshift-start-script --save
+sudo mongod&
+node dpd-openshift-start-script\server.js
+```
+
 # code
 ```javascript
 //Author: Patryk "ipepe" Ptasiński npm@ipepe.pl, credit to: schettino72
