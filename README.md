@@ -6,7 +6,7 @@ Based on code: schettino72
 
 http://blog.schettino72.net/posts/mongodb-setup-deployd-heroku.html
 
-#pre-usage
+# pre-usage
 Install mongodb:
 
 http://docs.mongodb.org/manual/installation/
@@ -24,7 +24,7 @@ use deployd
 db.addUser( { user: "deployd", pwd: "deployd", roles: [ "readWrite", "dbAdmin" ] } )
 ```
 
-#usage
+# usage
 
 You should have mongoDB running in background as a service or in separate terminal window with 
 ```bash
@@ -56,7 +56,7 @@ var db_ip_address = process.env.OPENSHIFT_MONGODB_DB_HOST || server_ip_address;
 // OPENSHIFT DB ADDRESS
 var db_url_address = process.env.OPENSHIFT_MONGODB_DB_URL || 'mongodb://deployd:deployd@'+db_ip_address+':27017/deployd';
 // HEROKU DB ADDRESS
-//var db_url_address = process.env.MONGOHQ_URL || "mongodb://:@localhost:27017/my_db_name";
+// var db_url_address = process.env.MONGOHQ_URL || 'mongodb://deployd:deployd@'+db_ip_address+':27017/deployd';
 var db_parsed_url = url.parse(db_url_address);
 // ==================== Output current app config
 console.log(server_env);
