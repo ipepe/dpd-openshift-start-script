@@ -1,7 +1,7 @@
 {
   "name": "dpd-openshift-start-script",
-  "version": "1.1.4",
-  "description": "My own, universal start script for developing on my computer and no changes needs to be done to make it work on openshift.",
+  "version": "1.1.5",
+  "description": "My universal start script for developing on my computer and no changes needs to be done to make it work on openshift.",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified, there will be tests soon. \" && exit 1",
