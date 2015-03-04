@@ -1,5 +1,5 @@
 # dpd-openshift-start-script
-My universal start script for developing on my computer and no changes needs to be done to make it work on openshift.
+My universal start script for developing on my computer and no changes needs to be done to make it work on openshift. Consider that this node_module is not deployd module, it is just wrapped script.
 
 # credits
 Based on code: schettino72
@@ -35,10 +35,13 @@ Example code in unix terminal:
 ```bash
 mkdir testproject
 cd testproject
+touch server.js
 npm init
 npm i deployd --save
 npm i dpd-openshift-start-script --save
-node dpd-openshift-start-script\server.js
+cp node_modules/dpd-openshift-start-script/server.js  ./
+mkdir resources
+node server.js
 ```
 
 # code
