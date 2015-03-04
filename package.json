@@ -1,11 +1,11 @@
 {
   "name": "dpd-openshift-start-script",
-  "version": "1.1.6",
-  "description": "My universal start script for developing on my computer and no changes needs to be done to make it work on openshift.",
+  "version": "2.0.0",
+  "description": "Node module that wrap around configuring and starting deployd instance on localhost and openshift in a lazy way.",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified, there will be tests soon. \" && exit 1",
-    "start": "node server.js"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -24,5 +24,8 @@
   "bugs": {
     "url": "https://github.com/ipepe/dpd-openshift-start-script/issues"
   },
-  "homepage": "https://github.com/ipepe/dpd-openshift-start-script"
+  "homepage": "https://github.com/ipepe/dpd-openshift-start-script",
+  "dependencies": {
+    "colors": "1.0.3"
+  }
 }

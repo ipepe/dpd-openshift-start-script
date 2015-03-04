@@ -1,5 +1,5 @@
 # dpd-openshift-start-script
-My universal start script for developing on my computer and no changes needs to be done to make it work on openshift. Consider that this node_module is not deployd module, it is just wrapped script.
+Node module that wrap around configuring and starting deployd instance on localhost and openshift in a lazy way.
 
 # credits
 Based on code: schettino72
@@ -24,7 +24,39 @@ use deployd
 db.addUser( { user: "deployd", pwd: "deployd", roles: [ "readWrite", "dbAdmin" ] } )
 ```
 
-# usage
+# usage for v2.x
+MongoDB start (or have you should have it running as a service)
+
+```bash
+sudo mongod
+```
+
+Create an index.js file in Your project:
+
+```javascript
+//index.js
+//Author: Patryk "ipepe" Ptasiński npmjs@ipepe.pl, credit to: schettino72
+// ==================== Load/start dependencies
+//this command will start server and return object with all variables that were involved in starting
+var deployd_instance = require('dpd-openshift-start-script');
+```
+
+Objects returned:
+```javascript
+module.exports = function () {
+	return {
+		deployd: server,
+		server_env: server_env,
+		server_port: server_port,
+		server_ip_address: server_ip_address,
+		db_ip_address: db_ip_address,
+		db_url_address: db_url_address,
+		colors: colors };
+};
+```
+
+
+# usage for v1.x
 
 You should have mongoDB running in background as a service or in separate terminal window with 
 ```bash
@@ -46,7 +78,7 @@ node server.js
 
 # code
 ```javascript
-//Author: Patryk "ipepe" Ptasiński npm@ipepe.pl, credit to: schettino72
+//Author: Patryk "ipepe" Ptasiński npmjs@ipepe.pl, credit to: schettino72
 // ==================== Load dependencies
 var deployd = require('deployd');
 var url = require('url');
