@@ -35,8 +35,14 @@ Create an index.js file in Your project:
 
 ```javascript
 // ==================== Load/start dependencies
-var deployd_instance = require('dpd-openshift-start-script');
+
 //this command will start server and return object with all variables that were involved in starting
+var deployd_instance = require('dpd-openshift-start-script');
+
+var colors = deployd_instance().colors
+//...
+console.log('You started deployd server by: ' + colors.magenta('dpd-openshift-start-script'));
+
 ```
 
 Objects returned:
