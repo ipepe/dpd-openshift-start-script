@@ -1,5 +1,5 @@
 # dpd-openshift-start-script
-My universal start script for developing on my computer and no changes needs to be done to make it work on openshift. Consider that this node_module is not deployd module, it is just wrapped script.
+Node module that wrap around configuring and starting deployd instance on localhost and openshift in a lazy way.
 
 # credits
 Based on code: schettino72
@@ -24,7 +24,36 @@ use deployd
 db.addUser( { user: "deployd", pwd: "deployd", roles: [ "readWrite", "dbAdmin" ] } )
 ```
 
-# usage
+# usage for v2.x
+MongoDB start (or have you should have it running as a service)
+
+```bash
+sudo mongod
+```
+
+Create an index.js file in Your project:
+
+```javascript
+// ==================== Load/start dependencies
+var deployd_instance = require('dpd-openshift-start-script');
+//this command will start server and return object with all variables that were involved in starting
+```
+
+Objects returned:
+```javascript
+module.exports = function () {
+	return {
+		deployd: server,
+		server_env: server_env,
+		server_port: server_port,
+		server_ip_address: server_ip_address,
+		db_ip_address: db_ip_address,
+		db_url_address: db_url_address,
+		colors: colors };
+};
+```
+
+# usage for v1.x
 
 You should have mongoDB running in background as a service or in separate terminal window with 
 ```bash
@@ -44,12 +73,13 @@ mkdir resources
 node server.js
 ```
 
-# code
+# code inside v2.0
 ```javascript
 //Author: Patryk "ipepe" Ptasiński npm@ipepe.pl, credit to: schettino72
 // ==================== Load dependencies
 var deployd = require('deployd');
 var url = require('url');
+var colors = require('colors')
 // ==================== Server Envs
 var server_env = process.env.NODE_ENV || 'development';
 var server_port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
@@ -62,9 +92,9 @@ var db_url_address = process.env.OPENSHIFT_MONGODB_DB_URL || 'mongodb://deployd:
 // var db_url_address = process.env.MONGOHQ_URL || 'mongodb://deployd:deployd@'+db_ip_address+':27017/deployd';
 var db_parsed_url = url.parse(db_url_address);
 // ==================== Output current app config
-console.log(server_env);
-console.log(server_ip_address + ':' + server_port);
-console.log(db_url_address);
+console.log( colors.yellow(server_env) );
+console.log( colors.yellow(server_ip_address + ':' + server_port) );
+console.log( colors.yellow(db_url_address) );
 // ==================== Configure DeployD instance
 var server = deployd({
 	port: server_port,
@@ -82,11 +112,11 @@ var server = deployd({
 // ==================== Listen
 server.listen(server_port, server_ip_address);
 server.on('listening', function() {
-	console.log("Server is listening");
+	console.log( colors.green('Server is listening') );
 });
 // ==================== Catch Errors
 server.on('error', function(err) {
-	console.error(err);
+	console.error( colors.red(err) );
 	// Give the server a chance to return an error
 	process.nextTick(function() {
 		process.exit();
