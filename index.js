@@ -17,9 +17,9 @@ module.exports = function () {
 	// var db_url_address = process.env.MONGOHQ_URL || 'mongodb://deployd:deployd@'+deployd_instance.db_ip_address+':27017/deployd';
 	deployd_instance.db_parsed_url = deployd_instance.url.parse(deployd_instance.db_url_address);
 	// ==================== Output current app config
-	console.log( colors.yellow(deployd_instance.server_env) );
-	console.log( colors.yellow(deployd_instance.server_ip_address + ':' + deployd_instance.server_port) );
-	console.log( colors.yellow(deployd_instance.db_url_address) );
+	console.log( deployd_instance.colors.yellow(deployd_instance.server_env) );
+	console.log( deployd_instance.colors.yellow(deployd_instance.server_ip_address + ':' + deployd_instance.server_port) );
+	console.log( deployd_instance.colors.yellow(deployd_instance.db_url_address) );
 	// ==================== Configure DeployD instance
 	deployd_instance.server = deployd({
 		port: server_port,
@@ -38,11 +38,11 @@ module.exports = function () {
 	deployd_instance.server.listen(deployd_instance.server_port, deployd_instance.server_ip_address);
 	deployd_instance.server.on('listening', function() {
 		deployd_instance.dpd_ic = deployd_instance.internalClient.build(process.server);
-		console.log( colors.green('Server is listening') );
+		console.log( deployd_instance.colors.green('Server is listening') );
 	});
 	// ==================== Catch Errors
 	deployd_instance.server.on('error', function(err) {
-		console.error( colors.red(err) );
+		console.error( deployd_instance.colors.red(err) );
 		// Give the server a chance to return an error
 		process.nextTick(function() {
 			process.exit();
