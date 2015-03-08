@@ -21,16 +21,16 @@ module.exports = function () {
 	console.log( deployd_instance.colors.yellow(deployd_instance.server_ip_address + ':' + deployd_instance.server_port) );
 	console.log( deployd_instance.colors.yellow(deployd_instance.db_url_address) );
 	// ==================== Configure DeployD instance
-	deployd_instance.server = deployd({
-		port: server_port,
-		env: server_env,
+	deployd_instance.server = deployd_instance.deployd({
+		port: deployd_instance.server_port,
+		env: deployd_instance.server_env,
 		db: {
-			host: db_parsed_url.hostname,
-			port: parseInt(db_parsed_url.port),
-			name: db_parsed_url.pathname.slice(1),
+			host: deployd_instance.db_parsed_url.hostname,
+			port: parseInt(deployd_instance.db_parsed_url.port),
+			name: deployd_instance.db_parsed_url.pathname.slice(1),
 			credentials: {
-				username: db_parsed_url.auth.split(':')[0],
-				password: db_parsed_url.auth.split(':')[1]
+				username: deployd_instance.db_parsed_url.auth.split(':')[0],
+				password: deployd_instance.db_parsed_url.auth.split(':')[1]
 			}
 		}
 	});
