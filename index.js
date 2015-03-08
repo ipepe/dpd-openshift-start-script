@@ -10,11 +10,11 @@ module.exports = function () {
 	deployd_instance.server_port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
 	deployd_instance.server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
 	// ==================== Database Envs
-	deployd_instance.db_ip_address = process.env.OPENSHIFT_MONGODB_DB_HOST || server_ip_address;
+	deployd_instance.db_ip_address = process.env.OPENSHIFT_MONGODB_DB_HOST || deployd_instance.server_ip_address;
 	// OPENSHIFT DB ADDRESS
-	deployd_instance.db_url_address = process.env.OPENSHIFT_MONGODB_DB_URL || 'mongodb://deployd:deployd@'+db_ip_address+':27017/deployd';
+	deployd_instance.db_url_address = process.env.OPENSHIFT_MONGODB_DB_URL || 'mongodb://deployd:deployd@'+deployd_instance.db_ip_address+':27017/deployd';
 	// HEROKU DB ADDRESS
-	// var db_url_address = process.env.MONGOHQ_URL || 'mongodb://deployd:deployd@'+db_ip_address+':27017/deployd';
+	// var db_url_address = process.env.MONGOHQ_URL || 'mongodb://deployd:deployd@'+deployd_instance.db_ip_address+':27017/deployd';
 	deployd_instance.db_parsed_url = url.parse(deployd_instance.db_url_address);
 	// ==================== Output current app config
 	console.log( colors.yellow(deployd_instance.server_env) );

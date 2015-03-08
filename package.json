@@ -1,6 +1,6 @@
 {
   "name": "dpd-openshift-start-script",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Node module that wrap around configuring and starting deployd instance on localhost and openshift in a lazy way.",
   "main": "server.js",
   "scripts": {
