@@ -37,9 +37,9 @@ Create an index.js file in Your project:
 // ==================== Load/start dependencies
 
 //this command will start server and return object with all variables that were involved in starting
-var deployd_instance = require('dpd-openshift-start-script');
+var deployd_setup = require('dpd-openshift-start-script');
 
-var colors = deployd_instance().colors
+var colors = deployd_setup().colors
 //...
 console.log('You started deployd server by: ' + colors.magenta('dpd-openshift-start-script'));
 
@@ -84,8 +84,9 @@ node server.js
 //Author: Patryk "ipepe" Ptasiński npm@ipepe.pl, credit to: schettino72
 // ==================== Load dependencies
 var deployd = require('deployd');
+var internalClient = require('deployd/lib/internal-client');
 var url = require('url');
-var colors = require('colors')
+var colors = require('colors');
 // ==================== Server Envs
 var server_env = process.env.NODE_ENV || 'development';
 var server_port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
@@ -102,6 +103,7 @@ console.log( colors.yellow(server_env) );
 console.log( colors.yellow(server_ip_address + ':' + server_port) );
 console.log( colors.yellow(db_url_address) );
 // ==================== Configure DeployD instance
+var dpd_ic;
 var server = deployd({
 	port: server_port,
 	env: server_env,
@@ -118,6 +120,7 @@ var server = deployd({
 // ==================== Listen
 server.listen(server_port, server_ip_address);
 server.on('listening', function() {
+	dpd_ic = internalClient.build(process.server);
 	console.log( colors.green('Server is listening') );
 });
 // ==================== Catch Errors
@@ -128,4 +131,17 @@ server.on('error', function(err) {
 		process.exit();
 	});
 });
+
+module.exports = function () {
+	return {
+		deployd: server,
+		dpd_ic: dpd_ic,
+		server_env: server_env,
+		server_port: server_port,
+		server_ip_address: server_ip_address,
+		db_ip_address: db_ip_address,
+		db_url_address: db_url_address,
+		colors: colors };
+};
+
 ```
