@@ -36,26 +36,45 @@ Create an index.js file in Your project:
 ```javascript
 // ==================== Load/start dependencies
 var deployd_setup = require('dpd-openshift-start-script');
-var deployd_instance = deployd_setup(); //starting deployd server, also this object contains everything included into starting server
-var colors = deployd_instance.colors; //colors dependency
+var deployd_instance = deployd_setup(deploydStartedCallback);
+var colors = deployd_instance.colors;
 
-//...
-console.log('You started deployd server by: ' + colors.magenta('dpd-openshift-start-script'));
-
+function deploydStartedCallback(){
+	//some code that requires deployd, maybe some operations on dpd-internalClient?
+	console.log('You started deployd server by: ' + colors.magenta('dpd-openshift-start-script'));
+	deployd_instance.dpd_ic.logger.post( {time: Date.now(), body: "Deployd server started"}, console.log)
+}
 ```
 
 Objects returned:
 ```javascript
-module.exports = function () {
-	return {
-		deployd: server,
-		server_env: server_env,
-		server_port: server_port,
-		server_ip_address: server_ip_address,
-		db_ip_address: db_ip_address,
-		db_url_address: db_url_address,
-		colors: colors };
-};
+deployd_instance.deployd = require('deployd');
+deployd_instance.internalClient = require('deployd/lib/internal-client');
+deployd_instance.url = require('url');
+deployd_instance.colors = require('colors');
+deployd_instance.server_env = process.env.NODE_ENV || 'development';
+deployd_instance.server_port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
+deployd_instance.server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
+deployd_instance.db_ip_address = process.env.OPENSHIFT_MONGODB_DB_HOST || deployd_instance.server_ip_address;
+deployd_instance.db_url_address = process.env.OPENSHIFT_MONGODB_DB_URL || 'mongodb://deployd:deployd@'+deployd_instance.db_ip_address+':27017/deployd';
+deployd_instance.db_parsed_url = deployd_instance.url.parse(deployd_instance.db_url_address);
+
+deployd_instance.server = deployd_instance.deployd({
+	port: deployd_instance.server_port,
+	env: deployd_instance.server_env,
+	db: {
+		host: deployd_instance.db_parsed_url.hostname,
+		port: parseInt(deployd_instance.db_parsed_url.port),
+		name: deployd_instance.db_parsed_url.pathname.slice(1),
+		credentials: {
+			username: deployd_instance.db_parsed_url.auth.split(':')[0],
+			password: deployd_instance.db_parsed_url.auth.split(':')[1]
+		}
+	}
+});
+//internal client is undefined until deployd server starts, You shouldn't use it before my script runs Your callback.
+deployd_instance.dpd_ic = deployd_instance.internalClient.build(process.server);
+
 ```
 
 # usage for v1.x
