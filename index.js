@@ -1,5 +1,5 @@
 //Author: Patryk "ipepe" Ptasiński npm@ipepe.pl, credit to: schettino72
-module.exports = function () {
+module.exports = function (after_start_callback) {
 	var deployd_instance = {};
 	deployd_instance.deployd = require('deployd');
 	deployd_instance.internalClient = require('deployd/lib/internal-client');
@@ -39,6 +39,7 @@ module.exports = function () {
 	deployd_instance.server.on('listening', function() {
 		deployd_instance.dpd_ic = deployd_instance.internalClient.build(process.server);
 		console.log( deployd_instance.colors.green('Server is listening') );
+		if ( typeof after_start_callback !== undefined ) after_start_callback();
 	});
 	// ==================== Catch Errors
 	deployd_instance.server.on('error', function(err) {
@@ -49,4 +50,4 @@ module.exports = function () {
 		});
 	});
 	return deployd_instance;
-}
+};

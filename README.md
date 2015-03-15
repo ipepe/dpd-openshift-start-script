@@ -60,7 +60,7 @@ module.exports = function () {
 
 # usage for v1.x
 
-You should have mongoDB running in background as a service or in separate terminal window with 
+You should have mongoDB running in background as a service or in separate terminal window with
 ```bash
 sudo mongod
 ```
@@ -78,69 +78,69 @@ mkdir resources
 node server.js
 ```
 
-# code inside v2.0
+# code inside v2.3
 ```javascript
 //Author: Patryk "ipepe" Ptasiński npm@ipepe.pl, credit to: schettino72
-// ==================== Load dependencies
-var deployd = require('deployd');
-var internalClient = require('deployd/lib/internal-client');
-var url = require('url');
-var colors = require('colors');
-// ==================== Server Envs
-var server_env = process.env.NODE_ENV || 'development';
-var server_port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
-var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
-// ==================== Database Envs
-var db_ip_address = process.env.OPENSHIFT_MONGODB_DB_HOST || server_ip_address;
-// OPENSHIFT DB ADDRESS
-var db_url_address = process.env.OPENSHIFT_MONGODB_DB_URL || 'mongodb://deployd:deployd@'+db_ip_address+':27017/deployd';
-// HEROKU DB ADDRESS
-// var db_url_address = process.env.MONGOHQ_URL || 'mongodb://deployd:deployd@'+db_ip_address+':27017/deployd';
-var db_parsed_url = url.parse(db_url_address);
-// ==================== Output current app config
-console.log( colors.yellow(server_env) );
-console.log( colors.yellow(server_ip_address + ':' + server_port) );
-console.log( colors.yellow(db_url_address) );
-// ==================== Configure DeployD instance
-var dpd_ic;
-var server = deployd({
-	port: server_port,
-	env: server_env,
-	db: {
-		host: db_parsed_url.hostname,
-		port: parseInt(db_parsed_url.port),
-		name: db_parsed_url.pathname.slice(1),
-		credentials: {
-			username: db_parsed_url.auth.split(':')[0],
-			password: db_parsed_url.auth.split(':')[1]
+module.exports = function (after_start_callback) {
+	var deployd_instance = {};
+	deployd_instance.deployd = require('deployd');
+	deployd_instance.internalClient = require('deployd/lib/internal-client');
+	deployd_instance.url = require('url');
+	deployd_instance.colors = require('colors');
+	// ==================== Server Envs
+	deployd_instance.server_env = process.env.NODE_ENV || 'development';
+	deployd_instance.server_port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
+	deployd_instance.server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
+	// ==================== Database Envs
+	deployd_instance.db_ip_address = process.env.OPENSHIFT_MONGODB_DB_HOST || deployd_instance.server_ip_address;
+	// OPENSHIFT DB ADDRESS
+	deployd_instance.db_url_address = process.env.OPENSHIFT_MONGODB_DB_URL || 'mongodb://deployd:deployd@'+deployd_instance.db_ip_address+':27017/deployd';
+	// HEROKU DB ADDRESS
+	// var db_url_address = process.env.MONGOHQ_URL || 'mongodb://deployd:deployd@'+deployd_instance.db_ip_address+':27017/deployd';
+	deployd_instance.db_parsed_url = deployd_instance.url.parse(deployd_instance.db_url_address);
+	// ==================== Output current app config
+	console.log( deployd_instance.colors.yellow(deployd_instance.server_env) );
+	console.log( deployd_instance.colors.yellow(deployd_instance.server_ip_address + ':' + deployd_instance.server_port) );
+	console.log( deployd_instance.colors.yellow(deployd_instance.db_url_address) );
+	// ==================== Configure DeployD instance
+	deployd_instance.server = deployd_instance.deployd({
+		port: deployd_instance.server_port,
+		env: deployd_instance.server_env,
+		db: {
+			host: deployd_instance.db_parsed_url.hostname,
+			port: parseInt(deployd_instance.db_parsed_url.port),
+			name: deployd_instance.db_parsed_url.pathname.slice(1),
+			credentials: {
+				username: deployd_instance.db_parsed_url.auth.split(':')[0],
+				password: deployd_instance.db_parsed_url.auth.split(':')[1]
+			}
 		}
-	}
-});
-// ==================== Listen
-server.listen(server_port, server_ip_address);
-server.on('listening', function() {
-	dpd_ic = internalClient.build(process.server);
-	console.log( colors.green('Server is listening') );
-});
-// ==================== Catch Errors
-server.on('error', function(err) {
-	console.error( colors.red(err) );
-	// Give the server a chance to return an error
-	process.nextTick(function() {
-		process.exit();
 	});
-});
-
-module.exports = function () {
-	return {
-		deployd: server,
-		dpd_ic: dpd_ic,
-		server_env: server_env,
-		server_port: server_port,
-		server_ip_address: server_ip_address,
-		db_ip_address: db_ip_address,
-		db_url_address: db_url_address,
-		colors: colors };
+	// ==================== Listen
+	deployd_instance.server.listen(deployd_instance.server_port, deployd_instance.server_ip_address);
+	deployd_instance.server.on('listening', function() {
+		deployd_instance.dpd_ic = deployd_instance.internalClient.build(process.server);
+		console.log( deployd_instance.colors.green('Server is listening') );
+		if ( typeof after_start_callback !== undefined ) after_start_callback();
+	});
+	// ==================== Catch Errors
+	deployd_instance.server.on('error', function(err) {
+		console.error( deployd_instance.colors.red(err) );
+		// Give the server a chance to return an error
+		process.nextTick(function() {
+			process.exit();
+		});
+	});
+	return deployd_instance;
 };
 
 ```
+
+# changelog
+
+- v2.3.0 - added callback so You know when Deployd is started. Useful for using dpd-internalClient, added changelog to readme
+- v2.2.0 - refactored exporting of object, adjusted readme
+- v2.1.0 - added dpd-internalClient into returned object
+- v2.0.0 - first version of creating real module with export
+- v1.1.0 - added optional heroku env strings to uncomment
+- v1.0.0 - project started
