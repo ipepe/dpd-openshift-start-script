@@ -2,6 +2,7 @@
 Node module that wrap around configuring and starting deployd instance on localhost and openshift in a lazy way.
 
 Author: Patryk "ipepe" Ptasiński
+
 Mail:		npmjs@ipepe.pl
 
 # credits
@@ -86,7 +87,7 @@ deployd_instance.server = deployd_instance.deployd({
 		}
 	}
 });
-//internal client is undefined until deployd server starts, You shouldn't use it before my script runs Your callback.
+//internal client is not defined until deployd server starts, You shouldn't use it before my script runs Your callback.
 deployd_instance.dpd_ic = deployd_instance.internalClient.build(process.server);
 
 ```

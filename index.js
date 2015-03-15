@@ -39,7 +39,7 @@ module.exports = function (after_start_callback) {
 	deployd_instance.server.on('listening', function() {
 		deployd_instance.dpd_ic = deployd_instance.internalClient.build(process.server);
 		console.log( deployd_instance.colors.green('Server is listening') );
-		if ( typeof after_start_callback !== undefined ) after_start_callback();
+		if ( typeof after_start_callback !== "undefined" ) after_start_callback();
 	});
 	// ==================== Catch Errors
 	deployd_instance.server.on('error', function(err) {
