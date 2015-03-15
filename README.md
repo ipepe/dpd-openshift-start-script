@@ -1,10 +1,24 @@
 # dpd-openshift-start-script
 Node module that wrap around configuring and starting deployd instance on localhost and openshift in a lazy way.
 
+Author: Patryk "ipepe" Ptasiński
+Mail:		npmjs@ipepe.pl
+
 # credits
 Based on code: schettino72
-
 http://blog.schettino72.net/posts/mongodb-setup-deployd-heroku.html
+
+# license
+Apache License v2
+
+# changelog
+
+- v2.3.0 - added callback so You know when Deployd is started. Useful for using dpd-internalClient, added changelog to readme
+- v2.2.0 - refactored exporting of object, adjusted readme
+- v2.1.0 - added dpd-internalClient into returned object
+- v2.0.0 - first version of creating real module with export
+- v1.1.0 - added optional heroku env strings to uncomment
+- v1.0.0 - project started
 
 # pre-usage
 Install mongodb:
@@ -154,12 +168,3 @@ module.exports = function (after_start_callback) {
 };
 
 ```
-
-# changelog
-
-- v2.3.0 - added callback so You know when Deployd is started. Useful for using dpd-internalClient, added changelog to readme
-- v2.2.0 - refactored exporting of object, adjusted readme
-- v2.1.0 - added dpd-internalClient into returned object
-- v2.0.0 - first version of creating real module with export
-- v1.1.0 - added optional heroku env strings to uncomment
-- v1.0.0 - project started
